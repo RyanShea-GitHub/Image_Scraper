@@ -10,8 +10,13 @@ from tkinter import filedialog
 #-----------------------------------------#
 #LOGIC FOR SCRAPING IMAGES OFF TARGET SITE#
 
-# url = 'https://www.thewrap.com/celebrity-mugshots-locklear-downey-jr-photos/'
+#target URL for building app 'https://www.thewrap.com/celebrity-mugshots-locklear-downey-jr-photos/'
 
+# Makes a new directory by joining the users chosen directory with the folder created by the user
+# requests the text information from the users target URL and beautiful soup extracts and parses the HTML 
+# changes directory based on the users chosen Directory
+# finds all image tags and ensure that they contain links. story the link and name in variables.
+# Open up the newly created file and download and write all of the images to your target destination
 def image_Downloader(url_Entry, folder_Entry):
     
     os.makedirs(os.path.join(chosen_dir, folder_Entry))
@@ -30,12 +35,19 @@ def image_Downloader(url_Entry, folder_Entry):
                 img = requests.get(link)
                 output_file.write(img.content)
 
+
+# Sets the chosen directory variable to global and passes it to the image scraper function to ensure that the new folder is in the right place
+# Sets the starting location in the file explorer to the user tab of the C drive
+# sets a label on the GUI to show which directory was chosen by the user
 def open_directory_Button():
     global chosen_dir
 
     chosen_dir = filedialog.askdirectory(initialdir='~', title="Please Select A Directory")
     return ttk.Label(root, text='You have chosen: ' + chosen_dir + ' as your selected Directory').grid(column=1, row=4, columnspan=3)
 
+# sets the variables to global so that they can be used in another function
+# sets the strings from the Tkinter Entry fields into variables that the scraping function will use
+# Calls the image scraper function and passes it the entry viables as the url and folder name paramaters
 def collect_Info():
     global url_Entry, folder_Entry
 
